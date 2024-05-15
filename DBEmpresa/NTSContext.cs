@@ -20,7 +20,7 @@ namespace DBEmpresa
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuración adicional aquí
+            //modelBuilder.Entity<Departamento>().ToTable("Departamento");
             modelBuilder.Entity<Departamento>(b =>
             {
                 b.Property(x => x.Nombre).HasMaxLength(128)
