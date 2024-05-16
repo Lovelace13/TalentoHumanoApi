@@ -17,11 +17,12 @@ builder.Services.AddDbContext<NTSContext>(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope()) 
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<NTSContext>();
-    dataContext.Database.Migrate();
-}
+// En caso no quiera usar el UPDATE-DATABASE
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<NTSContext>();
+//    dataContext.Database.Migrate();
+//}
 
 
 // Configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DBEmpresa.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DBEmpresa
 {
@@ -23,18 +24,45 @@ namespace DBEmpresa
             //modelBuilder.Entity<Departamento>().ToTable("Departamento");
             modelBuilder.Entity<Departamento>(b =>
             {
+                b.HasKey(x => x.DepartamentoID);
                 b.Property(x => x.Nombre).HasMaxLength(128)
                     .IsRequired();
+
             });
 
-            modelBuilder.Entity<Empleado>(b =>
+            modelBuilder.Entity<SubDepartamento>(b =>
             {
+                b.HasKey(x => x.SubDepartamentoID);
                 b.Property(x => x.Nombre).HasMaxLength(128)
                     .IsRequired();
-                b.HasOne<Departamento>().WithMany().HasForeignKey(x => x.DepartamentoID).IsRequired();
-                b.HasOne<SubDepartamento>().WithMany().HasForeignKey(x => x.SubdepartamentoID).IsRequired();
-                b.HasOne<RolEmpleado>().WithMany().HasForeignKey(x => x.RolID).IsRequired();
+
             });
+
+
+            modelBuilder.Entity<RolEmpleado>(b =>
+            {
+                b.HasKey(x => x.RolEmpleadoID);
+                b.Property(x => x.Nombre).HasMaxLength(128)
+                    .IsRequired();
+
+            });
+            modelBuilder.Entity<Empleado>(b =>
+            {
+                b.HasKey(x => x.EmpleadoID);
+                b.Property(x => x.Nombre).HasMaxLength(128)
+                    .IsRequired();
+
+
+                //b.HasOne<SubDepartamento>().WithMany().HasForeignKey(x => x.SubDepartamentoID).IsRequired()
+                //    .OnDelete(DeleteBehavior.Restrict);
+                //b.HasOne<RolEmpleado>().WithMany().HasForeignKey(x => x.RolID).IsRequired()
+                //    .OnDelete(DeleteBehavior.Restrict); 
+            });
+
+
+
+
+
         }
 
     }

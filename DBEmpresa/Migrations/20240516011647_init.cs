@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DBEmpresa.Migrations
 {
-    public partial class InitDB : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,28 +27,28 @@ namespace DBEmpresa.Migrations
                 name: "RolesEmpleados",
                 columns: table => new
                 {
-                    RolID = table.Column<int>(type: "int", nullable: false)
+                    RolEmpleadoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolesEmpleados", x => x.RolID);
+                    table.PrimaryKey("PK_RolesEmpleados", x => x.RolEmpleadoID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Subdepartamentos",
                 columns: table => new
                 {
-                    SubdepartamentoID = table.Column<int>(type: "int", nullable: false)
+                    SubDepartamentoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     DepartamentoID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subdepartamentos", x => x.SubdepartamentoID);
+                    table.PrimaryKey("PK_Subdepartamentos", x => x.SubDepartamentoID);
                     table.ForeignKey(
                         name: "FK_Subdepartamentos_Departamentos_DepartamentoID",
                         column: x => x.DepartamentoID,
@@ -67,11 +67,8 @@ namespace DBEmpresa.Migrations
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaContratacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DepartamentoID = table.Column<int>(type: "int", nullable: false),
-                    DepartamentoID1 = table.Column<int>(type: "int", nullable: false),
-                    SubdepartamentoID = table.Column<int>(type: "int", nullable: false),
-                    SubdepartamentoID1 = table.Column<int>(type: "int", nullable: false),
-                    RolID = table.Column<int>(type: "int", nullable: false),
-                    RolEmpleadoRolID = table.Column<int>(type: "int", nullable: false)
+                    SubDepartamentoID = table.Column<int>(type: "int", nullable: false),
+                    RolEmpleadoID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,35 +80,17 @@ namespace DBEmpresa.Migrations
                         principalColumn: "DepartamentoID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Empleados_Departamentos_DepartamentoID1",
-                        column: x => x.DepartamentoID1,
-                        principalTable: "Departamentos",
-                        principalColumn: "DepartamentoID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Empleados_RolesEmpleados_RolEmpleadoRolID",
-                        column: x => x.RolEmpleadoRolID,
+                        name: "FK_Empleados_RolesEmpleados_RolEmpleadoID",
+                        column: x => x.RolEmpleadoID,
                         principalTable: "RolesEmpleados",
-                        principalColumn: "RolID",
+                        principalColumn: "RolEmpleadoID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Empleados_RolesEmpleados_RolID",
-                        column: x => x.RolID,
-                        principalTable: "RolesEmpleados",
-                        principalColumn: "RolID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Empleados_Subdepartamentos_SubdepartamentoID",
-                        column: x => x.SubdepartamentoID,
+                        name: "FK_Empleados_Subdepartamentos_SubDepartamentoID",
+                        column: x => x.SubDepartamentoID,
                         principalTable: "Subdepartamentos",
-                        principalColumn: "SubdepartamentoID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Empleados_Subdepartamentos_SubdepartamentoID1",
-                        column: x => x.SubdepartamentoID1,
-                        principalTable: "Subdepartamentos",
-                        principalColumn: "SubdepartamentoID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "SubDepartamentoID",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,29 +121,14 @@ namespace DBEmpresa.Migrations
                 column: "DepartamentoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleados_DepartamentoID1",
+                name: "IX_Empleados_RolEmpleadoID",
                 table: "Empleados",
-                column: "DepartamentoID1");
+                column: "RolEmpleadoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleados_RolEmpleadoRolID",
+                name: "IX_Empleados_SubDepartamentoID",
                 table: "Empleados",
-                column: "RolEmpleadoRolID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Empleados_RolID",
-                table: "Empleados",
-                column: "RolID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Empleados_SubdepartamentoID",
-                table: "Empleados",
-                column: "SubdepartamentoID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Empleados_SubdepartamentoID1",
-                table: "Empleados",
-                column: "SubdepartamentoID1");
+                column: "SubDepartamentoID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subdepartamentos_DepartamentoID",

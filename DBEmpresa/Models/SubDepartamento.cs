@@ -8,10 +8,10 @@ namespace DBEmpresa.Models
 {
     public class SubDepartamento
     {
-        public int SubdepartamentoID { get; set; }
+        public int SubDepartamentoID { get; set; }
         public string Nombre { get; set; }
         public int DepartamentoID { get; set; }
         public Departamento Departamento { get; set; }
-        public ICollection<Empleado> Empleados { get; set; }
+        //public ICollection<Empleado> Empleados { get; set; }
     }
 }

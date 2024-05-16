@@ -12,9 +12,9 @@ namespace DBEmpresa.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RolID { get; set; }
+        public int RolEmpleadoID { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public ICollection<Empleado> Empleados { get; set; }
+        //public ICollection<Empleado> Empleados { get; set; }
     }
 }

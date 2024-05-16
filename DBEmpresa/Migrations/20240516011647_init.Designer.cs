@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBEmpresa.Migrations
 {
     [DbContext(typeof(NTSContext))]
-    [Migration("20240515223504_InitDB")]
-    partial class InitDB
+    [Migration("20240516011647_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,9 +61,6 @@ namespace DBEmpresa.Migrations
                     b.Property<int>("DepartamentoID")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartamentoID1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaContratacion")
                         .HasColumnType("datetime2");
 
@@ -72,42 +69,30 @@ namespace DBEmpresa.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("RolEmpleadoRolID")
+                    b.Property<int>("RolEmpleadoID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubdepartamentoID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubdepartamentoID1")
+                    b.Property<int>("SubDepartamentoID")
                         .HasColumnType("int");
 
                     b.HasKey("EmpleadoID");
 
                     b.HasIndex("DepartamentoID");
 
-                    b.HasIndex("DepartamentoID1");
+                    b.HasIndex("RolEmpleadoID");
 
-                    b.HasIndex("RolEmpleadoRolID");
-
-                    b.HasIndex("RolID");
-
-                    b.HasIndex("SubdepartamentoID");
-
-                    b.HasIndex("SubdepartamentoID1");
+                    b.HasIndex("SubDepartamentoID");
 
                     b.ToTable("Empleados");
                 });
 
             modelBuilder.Entity("DBEmpresa.Models.RolEmpleado", b =>
                 {
-                    b.Property<int>("RolID")
+                    b.Property<int>("RolEmpleadoID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolEmpleadoID"), 1L, 1);
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -115,29 +100,31 @@ namespace DBEmpresa.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.HasKey("RolID");
+                    b.HasKey("RolEmpleadoID");
 
                     b.ToTable("RolesEmpleados");
                 });
 
             modelBuilder.Entity("DBEmpresa.Models.SubDepartamento", b =>
                 {
-                    b.Property<int>("SubdepartamentoID")
+                    b.Property<int>("SubDepartamentoID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubdepartamentoID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubDepartamentoID"), 1L, 1);
 
                     b.Property<int>("DepartamentoID")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.HasKey("SubdepartamentoID");
+                    b.HasKey("SubDepartamentoID");
 
                     b.HasIndex("DepartamentoID");
 
@@ -173,39 +160,21 @@ namespace DBEmpresa.Migrations
 
             modelBuilder.Entity("DBEmpresa.Models.Empleado", b =>
                 {
-                    b.HasOne("DBEmpresa.Models.Departamento", null)
+                    b.HasOne("DBEmpresa.Models.Departamento", "Departamento")
                         .WithMany()
                         .HasForeignKey("DepartamentoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DBEmpresa.Models.Departamento", "Departamento")
-                        .WithMany("Empleados")
-                        .HasForeignKey("DepartamentoID1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DBEmpresa.Models.RolEmpleado", "RolEmpleado")
-                        .WithMany("Empleados")
-                        .HasForeignKey("RolEmpleadoRolID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DBEmpresa.Models.RolEmpleado", null)
                         .WithMany()
-                        .HasForeignKey("RolID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DBEmpresa.Models.SubDepartamento", null)
-                        .WithMany()
-                        .HasForeignKey("SubdepartamentoID")
+                        .HasForeignKey("RolEmpleadoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DBEmpresa.Models.SubDepartamento", "Subdepartamento")
-                        .WithMany("Empleados")
-                        .HasForeignKey("SubdepartamentoID1")
+                        .WithMany()
+                        .HasForeignKey("SubDepartamentoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -219,7 +188,7 @@ namespace DBEmpresa.Migrations
             modelBuilder.Entity("DBEmpresa.Models.SubDepartamento", b =>
                 {
                     b.HasOne("DBEmpresa.Models.Departamento", "Departamento")
-                        .WithMany("Subdepartamentos")
+                        .WithMany()
                         .HasForeignKey("DepartamentoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -236,23 +205,6 @@ namespace DBEmpresa.Migrations
                         .IsRequired();
 
                     b.Navigation("Empleado");
-                });
-
-            modelBuilder.Entity("DBEmpresa.Models.Departamento", b =>
-                {
-                    b.Navigation("Empleados");
-
-                    b.Navigation("Subdepartamentos");
-                });
-
-            modelBuilder.Entity("DBEmpresa.Models.RolEmpleado", b =>
-                {
-                    b.Navigation("Empleados");
-                });
-
-            modelBuilder.Entity("DBEmpresa.Models.SubDepartamento", b =>
-                {
-                    b.Navigation("Empleados");
                 });
 #pragma warning restore 612, 618
         }

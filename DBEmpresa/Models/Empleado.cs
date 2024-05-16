@@ -10,20 +10,20 @@ namespace DBEmpresa.Models
 {
     public class Empleado
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmpleadoID { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public DateTime FechaContratacion { get; set; }
         public int DepartamentoID { get; set; }
-        [ForeignKey("DepartamentoID")]
+        
+        //[ForeignKey("DepartamentoID")]
         public Departamento Departamento { get; set; }
-        public int SubdepartamentoID { get; set; }
-        [ForeignKey("SubdepartamentoID")]
+        public int SubDepartamentoID { get; set; }
+        //[ForeignKey("SubdepartamentoID")]
         public SubDepartamento Subdepartamento { get; set; }
-        public int RolID { get; set; }
-        [ForeignKey("RolID")]
+        public int RolEmpleadoID { get; set; }
+        //[ForeignKey("RolID")]
         public RolEmpleado RolEmpleado { get; set; }
     }
 }
